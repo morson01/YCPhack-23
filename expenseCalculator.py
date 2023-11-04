@@ -2,12 +2,14 @@ from Expernse import expense
 
 
 def main():
-    print("Welcome to Expense Calculator.")
+    #print("Welcome to Expense Calculator.")
     expense_file_path = "expense.csv"
-    final_expense = user_expense()
+    #final_expense = user_expense()
     #print(final_expense)
 
-    save_expense_to_file(expense, expense_file_path)
+    #save_expense_to_file(final_expense, expense_file_path)
+
+    summarize_expenses(expense_file_path)
 
 def user_expense():
     spender_name = input("Please enter your name: ")
@@ -50,9 +52,33 @@ def user_expense():
             )
              return new_expense
 
-def save_expense_to_file(Expernse: expense, expense_file_path):
+def save_expense_to_file(expense, expense_file_path):
     with open(expense_file_path, "a") as f:
-        f.write(f"{expense.name}, {expense.amount}, {expense.category}")
+        print("\n")
+        f.write(f" \n{expense.name}, {expense.amount}, {expense.category} \n")
+
+def summarize_expenses(expense_file_path):
+    Expernse: list[expense] = []
+    with open(expense_file_path, "r") as f:
+        lines = f.readlines()
+        for line in lines:
+            stripped_line = line.strip()
+            splitted_list = stripped_line.split(",")
+
+            if(len(splitted_list) >= 3):
+                expense_name = splitted_list[0]
+                expense_amount = splitted_list[1]
+                expense_category = splitted_list[2]
+                line_expense = expense(
+                    name = expense_name,
+                    amount = float(expense_amount),
+                    category = expense_category
+                )            
+                print(line_expense)
+            else:
+                print("Invalid!!!")
+
+
 
 if __name__ == "__main__":
     main()
